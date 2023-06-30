@@ -1,5 +1,7 @@
 # Message Me
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1b216ffa10ba48a29faa092bc6750c65)](https://app.codacy.com/gh/GuiSysLima/MessageMe?utm_source=github.com&utm_medium=referral&utm_content=GuiSysLima/MessageMe&utm_campaign=Badge_Grade)
+
 #
                                    👨‍💻 DEV
 * Guilherme Rutemberg
