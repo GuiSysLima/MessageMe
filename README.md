@@ -1,13 +1,12 @@
-# Message Me
-
+#Message Me
 #
-                                   👨‍💻 DEV
+                                        👨‍💻 DEV
 * Guilherme Rutemberg
 #
-                                    📍 About
+                                        📍 About
 * Message Me is an real time web chat application built in ruby on rails.
 #
-                                       Development Environment
+                                    🛠️ Development Environment
 
 * [Ruby 3.1.1p18](https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-3.1.1-1/rubyinstaller-devkit-3.1.1-1-x64.exe)
 * Rails 7.0.2.2
