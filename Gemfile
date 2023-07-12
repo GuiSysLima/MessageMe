@@ -11,6 +11,8 @@ gem "sqlite3", "~> 1.4"
 
 gem "puma", "~> 5.0"
 
+gem 'bcrypt', '~> 3.1', '>= 3.1.11'
+
 gem "importmap-rails"
 
 gem "turbo-rails"
