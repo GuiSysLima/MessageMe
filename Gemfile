@@ -29,6 +29,10 @@ group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
 end
 
+group :development do
+  gem "web-console"
+end
+
 group :test do
   gem "capybara"
   gem "selenium-webdriver"
