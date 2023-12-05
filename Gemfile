@@ -23,6 +23,8 @@ gem "jbuilder"
 
 gem "tzinfo-data"
 
+gem "hirb"
+
 gem "bootsnap", require: false
 
 group :development, :test do
