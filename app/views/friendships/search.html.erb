@@ -1,0 +1,41 @@
+<h1 class="ui header">Search for Users</h1>
+
+<%= form_with(url: search_friends_path, method: :get, local: true, class: "ui form") do |f| %>
+  <div class="field">
+    <%= f.label :search_term, "Search by username or email" %>
+    <%= f.text_field :search_term, placeholder: "e.g. testuser or test@example.com" %>
+  </div>
+  <%= f.submit "Search", class: "ui primary button" %>
+<% end %>
+
+<div class="ui hidden divider"></div>
+
+<% if @users.any? %>
+  <h3 class="ui header">Search Results</h3>
+  <div class="ui relaxed divided list">
+    <% @users.each do |user| %>
+      <div class="item">
+        <div class="content">
+          <div class="header"><%= user.username %> (<%= user.email %>)</div>
+        </div>
+        <div class="right floated content">
+          
+          <%# Logic for which button to show %>
+          <% if current_user.friend_with?(user) %>
+            <span class="ui mini label">Already Friends</span>
+            
+          <% elsif current_user.pending_friends.include?(user) %>
+            <span class="ui mini label">Request Sent</span>
+            
+          <% elsif current_user.friend_requests.include?(user) %>
+            <%= link_to "Respond to Request", my_friends_path, class: "ui mini button" %>
+            
+          <% else %>
+            <%= button_to "Add Friend", friendships_path(friend_id: user.id), method: :post, class: "ui mini primary button" %>
+          <% end %>
+
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

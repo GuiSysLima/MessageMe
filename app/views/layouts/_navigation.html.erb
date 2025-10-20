@@ -1,8 +1,14 @@
 <% if user_signed_in? %>
   <%= link_to "Chatroom", chatroom_path, class: "item"%>
-  <a class="item">
-    Messages
-  </a>
+  <%= link_to my_friends_path, class: "item" do %>
+    My Friends
+    <% if current_user.friend_requests.any? %>
+      <div class="ui mini red circular label">
+        <%= current_user.friend_requests.count %>
+      </div>
+    <% end %>
+  <% end %>
+  <%= link_to "Search Users", search_friends_path, class: "item" %>
 <% end %>
 
 <div class="right menu">
