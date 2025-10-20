@@ -33,11 +33,15 @@
       <div class="content">
         <div class="ui vertical menu">
           <a class="active item">
-            <%= link_to "Search Users", search_friends_path %>
-          </a>
-          <a class="item">
-            <%= link_to "Friends", my_friends_path %>
-          </a>
+            <%= link_to "Search Users", search_friends_path, class: "active item" %>
+            <%= link_to my_friends_path, class: "item" do %>
+              Friends
+              <% if current_user.friend_requests.any? %>
+                <div class="ui mini red circular label">
+                  <%= current_user.friend_requests.count %>
+                </div>
+              <% end %>
+            <% end %>
         </div>
       </div>
     </div>
