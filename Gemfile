@@ -25,6 +25,8 @@ gem "tzinfo-data"
 
 gem "hirb"
 
+gem 'devise'
+
 gem "bootsnap", require: false
 
 group :development, :test do
