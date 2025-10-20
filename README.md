@@ -17,4 +17,4 @@
 * [Yarn 1.22.19](https://github.com/yarnpkg/yarn/releases/download/v1.22.15/yarn-1.22.15.msi)
 #                                    
                                     🚧 Project Status 
-<img src="https://raw.githubusercontent.com/GuiSysLima/gifs/main/Progress%20Icon.gif" alt="Pending" width="23.5" />![Dynamic JSON Badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FGuiSysLima%2FMessageMe%2Fmain%2Fstatus.json&query=%24.status&style=flat-square&label=Development%20Status&color=%23FFFF00)
+<img src="https://raw.githubusercontent.com/GuiSysLima/gifs/main/Progress%20Icon.gif" alt="Pending" width="23" />![Dynamic JSON Badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FGuiSysLima%2FMessageMe%2Fmain%2Fstatus.json&query=%24.status&style=flat-square&label=Development%20Status&color=%23FFFF00)
