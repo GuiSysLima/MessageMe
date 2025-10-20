@@ -1,0 +1,14 @@
+<div class="ui center aligned very padded segment">
+  <h1 class="ui huge header">
+    Welcome to MessageMe
+  </h1>
+  <p>A simple chat application built with Ruby on Rails.</p>
+  <p>Start chatting with your friends now</p>
+  <div class="ui hidden divider"></div>
+  <% if user_signed_in? %>
+    <%= link_to "Go to the Chatroom", chatroom_path, class: "ui massive primary button" %>
+  <% else %>
+    <%= link_to "Sign up to start chatting!", new_user_registration_path, class: "ui massive primary button" %>
+  <% end %>
+
+</div>
