@@ -2,20 +2,25 @@
 <a class="item">
   Messages
 </a>
+
 <div class="right menu">
-  <div class="ui dropdown item">
-    Account <i class="dropdown icon"></i>
-    <div class="menu">
-      <% if logged_in? %>
-        <%= link_to "Logout", logout_path, method: :delete, class: "item" %>
-      <% else %>
-        <%= link_to "Log in", login_path, class: "item" %>
-      <% end %>
+  <% if user_signed_in? %>
+
+    <div class="ui dropdown item">
+      <%= current_user.username %> <i class="dropdown icon"></i>
+      <div class="menu">
+        <%= link_to "Profile", edit_user_registration_path, class: "item" %>
+        <div class="divider"></div>
+        <%= link_to "Logout", destroy_user_session_path, data: { "turbo-method": :delete }, class: "item" %>
+      </div>
     </div>
-  </div>
-  <% if !logged_in? %>
+
+  <% else %>
     <div class="item">
-      <%= link_to "Log in", login_path, class: "ui primary button" %>
+      <%= link_to "Log in", new_user_session_path, class: "ui primary button" %>
+    </div>
+    <div class="item">
+      <%= link_to "Sign up", new_user_registration_path, class: "ui button" %>
     </div>
   <% end %>
 </div>
