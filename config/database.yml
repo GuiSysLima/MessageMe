@@ -4,8 +4,10 @@ default: &default
   timeout: 5000
 
 development:
-  <<: *default
-  database: db/development.sqlite3
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  url: <%= ENV["DATABASE_URL"] %>
 
 test:
   <<: *default
