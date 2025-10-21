@@ -35,6 +35,7 @@ end
 
 group :development do
   gem "web-console"
+  gem "pg"
 end
 
 group :test do
