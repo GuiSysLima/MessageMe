@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  get 'messages/create'
+  get 'private_messages/create'
+  get 'conversations/index'
+  get 'conversations/show'
+  get 'conversations/create'
   
   devise_for :users
 
@@ -11,4 +16,7 @@ Rails.application.routes.draw do
   post 'friendships', to: 'friendships#create'
   patch 'friendships/:id', to: 'friendships#update', as: 'update_friendship'
   delete 'friendships/:id', to: 'friendships#destroy', as: 'friendship'
+  
+  resources :conversations, only: [:index, :show, :create]
+  resources :private_messages, only: [:create]
 end

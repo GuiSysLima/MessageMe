@@ -1,0 +1,23 @@
+<turbo-frame-tag id="chat_window">
+  <div class="ui fluid raised card chatbox">
+    <div class="content">
+      <% other_user = (@conversation.sender == current_user) ? @conversation.recipient : @conversation.sender %>
+      <h3 class="ui header">Chat with <%= other_user.username %></h3>
+      <%= turbo_stream_from [@conversation, "messages"] %>
+
+      <div class="ui feed" style="height: 500px; overflow-y: scroll;">
+        <%= render @private_messages %>
+      </div>
+    </div>
+
+    <div class="extra content">
+      <%= form_with(model: @private_message, url: private_messages_path, class: "ui form") do |f| %>
+        <%= f.hidden_field :conversation_id, value: @conversation.id %>
+        <div class="field">
+          <%= f.text_area :body, placeholder: "Write your message...", rows: 3 %>
+        </div>
+        <%= f.submit "Send", class: "ui primary button" %>
+      <% end %>
+    </div>
+  </div>
+</turbo-frame-tag>
