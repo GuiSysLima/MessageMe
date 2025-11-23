@@ -23,81 +23,8 @@
   <div class="ui container">
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
-
+    
     <%= yield %>
   </div>
-  <script>
-    (function() {
-      var ensureLibs = function() {
-        if (typeof ActionCable === 'undefined' || typeof Turbo === 'undefined') {
-          console.log("⏳ Aguardando libs...");
-          setTimeout(ensureLibs, 100);
-          return;
-        }
-        startApp();
-      };
-
-      var startApp = function() {
-        if (!window.App) window.App = {};
-
-        if (!window.App.cable) {
-          console.log("🚀 [1/2] Action Cable Criado.");
-          window.App.cable = ActionCable.createConsumer();
-        }
-
-        var connectStreams = function() {
-          var tags = document.querySelectorAll("turbo-cable-stream-source");
-          
-          tags.forEach(function(tag) {
-            if (tag.dataset.connected) return; 
-
-            var channel = tag.getAttribute("channel");
-            var signedName = tag.getAttribute("signed-stream-name");
-
-            if (channel && signedName) {
-              console.log("📡 [2/2] Conectando ao canal: " + signedName);
-              
-              window.App.cable.subscriptions.create(
-                { channel: channel, signed_stream_name: signedName },
-                {
-                  connected() { console.log("✅ Conectado!"); },
-                  received(data) {
-                  console.log("📩 Mensagem recebida! Processando manualmente...");
-                  
-                  var parser = new DOMParser();
-                  var doc = parser.parseFromString(data, "text/html");
-                  var stream = doc.querySelector("turbo-stream");
-                  
-                  if (stream) {
-                    var targetId = stream.getAttribute("target");
-                    var content = stream.querySelector("template").innerHTML;
-
-                    var targetElement = document.getElementById(targetId);
-                    
-                    if (targetElement) {
-                      targetElement.insertAdjacentHTML("beforeend", content);
-                      
-                      targetElement.scrollTop = targetElement.scrollHeight;
-                      
-                      console.log("✅ Mensagem renderizada com sucesso!");
-                    } else {
-                      console.warn("⚠️ Elemento alvo não encontrado: " + targetId);
-                    }
-                  }
-                }
-              }
-              );
-              tag.dataset.connected = "true"; 
-            }
-          });
-        };
-
-        connectStreams();
-        document.addEventListener("turbo:load", connectStreams);
-      };
-
-      ensureLibs();
-    })();
-  </script>
   </body>
 </html>
