@@ -9,10 +9,13 @@ module ApplicationCable
     private
 
     def find_verified_user
-      # This finds the user that Devise has logged in
-      if (verified_user = env['warden'].user)
-        verified_user
+      user = env['warden'].user
+      
+      if user
+        puts "✅ Action Cable: Usuário encontrado! ID: #{user.id}"
+        user
       else
+        puts "❌ Action Cable: Nenhum usuário logado ou cookie inválido."
         reject_unauthorized_connection
       end
     end

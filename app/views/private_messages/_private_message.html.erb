@@ -1,11 +1,13 @@
 <div class="event">
   <div class="content">
     <div class="summary">
-      <em><%= private_message.user.username%></em>: <%= private_message.body%>
-    </div>
-    <div class="meta">
+      <a class="user"> 
+      <%= private_message.user.username%>
+      </a>: 
+      <%= private_message.body%>
+    
       <div class="date">
-        <%= time_ago_in_words(private_message.created_at) %> ago
+        <%= time_ago_in_words(private_message.created_at) %> atrás
       </div>
     </div>
   </div>
