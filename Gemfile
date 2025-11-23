@@ -47,6 +47,7 @@ end
 group :production, :actions do
   gem 'pg'
   gem 'activerecord-postgresql-adapter'
+  gem 'redis'
 end
 
 gem 'semantic-ui-sass'
