@@ -27,35 +27,32 @@
   </div>
   <script>
     (function() {
-      var connectTurboToCable = function() {
-        
-        if (typeof ActionCable === 'undefined') return;
-        
+
+      var waitForTurbo = function() {
+
+        if (typeof ActionCable === 'undefined' || typeof Turbo === 'undefined') {
+          console.log("⏳ Aguardando ActionCable e Turbo carregarem...");
+          setTimeout(waitForTurbo, 100);
+          return;
+        }
+
         if (!window.App) window.App = {};
-    
+
         if (!window.App.cable) {
-          console.log("🚀 [1/3] Criando Action Cable...");
+          console.log("🚀 [1/2] Action Cable Criado.");
           window.App.cable = ActionCable.createConsumer();
         }
 
-        if (typeof Turbo !== 'undefined') {
-          if (Turbo.connectStreamSource) {
-            console.log("🚀 [2/3] Conectando Turbo (connectStreamSource)...");
-            Turbo.connectStreamSource(window.App.cable);
-          } 
-          else if (Turbo.session && Turbo.session.connectStreamSource) {
-            console.log("🚀 [2/3] Conectando Turbo (Turbo.session)...");
-            Turbo.session.connectStreamSource(window.App.cable);
-          }
-          else {
-            console.warn("⚠️ Turbo detectado, mas método de conexão não encontrado.");
-          }
+        if (Turbo.connectStreamSource) {
+          console.log("🚀 [2/2] Conectando Turbo ao Stream (SUCESSO).");
+          Turbo.connectStreamSource(window.App.cable);
+        } else {
+          console.log("🚀 [2/2] Forçando assinatura manual.");
+          window.App.cable.subscriptions.create("ActionCable::Channel");
         }
       };
-      
-      connectTurboToCable();
-      document.addEventListener("turbo:load", connectTurboToCable);
-      document.addEventListener("DOMContentLoaded", connectTurboToCable);
+
+      waitForTurbo();
     })();
   </script>
   </body>
