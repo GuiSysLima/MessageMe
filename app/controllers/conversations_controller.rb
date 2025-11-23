@@ -8,7 +8,7 @@ class ConversationsController < ApplicationController
   def show
     @conversation = Conversation.find(params[:id])
     
-    @private_messages = @conversation.private_messages
+    @private_messages = @conversation.private_messages.order(created_at: :asc)
 
     @private_message = PrivateMessage.new
   end
