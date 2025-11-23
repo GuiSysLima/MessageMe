@@ -15,7 +15,7 @@ gem 'bcrypt', '~> 3.1', '>= 3.1.11'
 
 gem "importmap-rails"
 
-gem "turbo-rails"
+gem 'turbo-rails', '~> 1.0'
 
 gem "stimulus-rails"
 
@@ -47,6 +47,7 @@ end
 group :production, :actions do
   gem 'pg'
   gem 'activerecord-postgresql-adapter'
+  gem 'redis'
 end
 
 gem 'semantic-ui-sass'

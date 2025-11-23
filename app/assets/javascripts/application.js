@@ -1,8 +1,7 @@
 //= require jquery
-//= require rails-ujs
 //= require activestorage
 //= require semantic-ui
-//= require actioncable
+//= require custom_cable
 
 var initDropdowns = function() {
   console.log("Reiniciando Dropdowns...");
@@ -11,7 +10,7 @@ var initDropdowns = function() {
   
   $('.ui.dropdown').dropdown({
     action: 'hide',
-    onChange: function(value, text, $selectedItem) {
+    onChange: function(value) {
       console.log("Selecionado: " + value);
     }
   });
