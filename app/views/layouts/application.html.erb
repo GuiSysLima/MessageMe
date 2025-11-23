@@ -62,10 +62,30 @@
                 {
                   connected() { console.log("✅ Conectado!"); },
                   received(data) {
-                    console.log("📩 Mensagem recebida! Aplicando ao HTML...");
-                    document.body.insertAdjacentHTML("beforeend", data);
+                  console.log("📩 Mensagem recebida! Processando manualmente...");
+                  
+                  var parser = new DOMParser();
+                  var doc = parser.parseFromString(data, "text/html");
+                  var stream = doc.querySelector("turbo-stream");
+                  
+                  if (stream) {
+                    var targetId = stream.getAttribute("target");
+                    var content = stream.querySelector("template").innerHTML;
+
+                    var targetElement = document.getElementById(targetId);
+                    
+                    if (targetElement) {
+                      targetElement.insertAdjacentHTML("beforeend", content);
+                      
+                      targetElement.scrollTop = targetElement.scrollHeight;
+                      
+                      console.log("✅ Mensagem renderizada com sucesso!");
+                    } else {
+                      console.warn("⚠️ Elemento alvo não encontrado: " + targetId);
+                    }
                   }
                 }
+              }
               );
               tag.dataset.connected = "true"; 
             }
