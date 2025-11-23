@@ -28,15 +28,31 @@
   <script>
     (function() {
       var startCable = function() {
-        if (typeof ActionCable !== 'undefined') {
+        // Verifica se as bibliotecas carregaram
+        if (typeof ActionCable !== 'undefined' && typeof Turbo !== 'undefined') {
+          
           if (!window.App) window.App = {};
+          
+          // 1. Cria o consumidor se não existir
           if (!window.App.cable) {
-            console.log("🚀 Iniciando Action Cable (Forçado via HTML)...");
+            console.log("🚀 (1/2) Criando Action Cable Consumer...");
             window.App.cable = ActionCable.createConsumer();
+          }
+
+          // 2. O PULO DO GATO: Conecta o Turbo ao Action Cable
+          if (Turbo.connectStreamSource) {
+            console.log("🚀 (2/2) Conectando Turbo ao Stream...");
+            Turbo.connectStreamSource(window.App.cable);
+          } else {
+            // Fallback para versões mais antigas do Turbo
+            console.log("🚀 (2/2) Turbo detectado (Modo Legacy)...");
+            // Força uma assinatura "falsa" só para abrir o WebSocket e manter a porta aberta
+            window.App.cable.subscriptions.create("ActionCable::Channel");
           }
         }
       };
 
+      // Tenta rodar imediatamente e também nos eventos de carregamento
       startCable();
       document.addEventListener("turbo:load", startCable);
       document.addEventListener("DOMContentLoaded", startCable);
