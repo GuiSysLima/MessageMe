@@ -49,25 +49,25 @@
           var tags = document.querySelectorAll("turbo-cable-stream-source");
           
           tags.forEach(function(tag) {
-            if (tag.dataset.connected) return;
+            if (tag.dataset.connected) return; 
 
             var channel = tag.getAttribute("channel");
             var signedName = tag.getAttribute("signed-stream-name");
 
             if (channel && signedName) {
               console.log("📡 [2/2] Conectando ao canal: " + signedName);
-
+              
               window.App.cable.subscriptions.create(
                 { channel: channel, signed_stream_name: signedName },
                 {
                   connected() { console.log("✅ Conectado!"); },
                   received(data) {
-                    console.log("📩 Mensagem recebida via WebSocket!");
-                    window.Turbo.renderStreamMessage(data);
+                    console.log("📩 Mensagem recebida! Aplicando ao HTML...");
+                    document.body.insertAdjacentHTML("beforeend", data);
                   }
                 }
               );
-              tag.dataset.connected = "true";
+              tag.dataset.connected = "true"; 
             }
           });
         };
