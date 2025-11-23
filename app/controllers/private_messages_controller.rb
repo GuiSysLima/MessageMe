@@ -1,25 +1,22 @@
 class PrivateMessagesController < ApplicationController
   def create
-      @conversation = Conversation.find(params[:private_message][:conversation_id])
-      @private_message = current_user.private_messages.build(private_message_params)
-      
-      if @private_message.save
-        # --- BROADCAST MANUAL ---
-        # Força o envio da mensagem para o canal do Action Cable agora mesmo
-        Turbo::StreamsChannel.broadcast_append_to(
-          "chat_#{@conversation.id}", 
-          target: "private_messages", 
-          partial: "private_messages/private_message", 
-          locals: { private_message: @private_message }
-        )
-        # ------------------------
+    @conversation = Conversation.find(params[:private_message][:conversation_id])
+    @private_message = current_user.private_messages.build(private_message_params)
+    
+    if @private_message.save
+      Turbo::StreamsChannel.broadcast_append_to(
+        "chat_#{@conversation.id}",
+        target: "private_messages",       
+        partial: "private_messages/private_message", 
+        locals: { private_message: @private_message }
+      )
 
-        redirect_to conversation_path(@conversation)
-      else
-        flash[:alert] = "Message could not be sent."
-        redirect_to conversation_path(@conversation)
-      end
+      redirect_to conversation_path(@conversation)
+    else
+      flash[:alert] = "Message could not be sent."
+      redirect_to conversation_path(@conversation)
     end
+  end
 
   private
 
