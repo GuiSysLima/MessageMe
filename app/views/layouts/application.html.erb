@@ -25,5 +25,22 @@
 
     <%= yield %>
   </div>
+  <script>
+    (function() {
+      var startCable = function() {
+        if (typeof ActionCable !== 'undefined') {
+          if (!window.App) window.App = {};
+          if (!window.App.cable) {
+            console.log("🚀 Iniciando Action Cable (Forçado via HTML)...");
+            window.App.cable = ActionCable.createConsumer();
+          }
+        }
+      };
+
+      startCable();
+      document.addEventListener("turbo:load", startCable);
+      document.addEventListener("DOMContentLoaded", startCable);
+    })();
+  </script>
   </body>
 </html>
