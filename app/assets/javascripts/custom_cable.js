@@ -10,6 +10,8 @@
   var startApp = function() {
     if (!window.App) window.App = {};
 
+    if (!window.App.activeSubscriptions) window.App.activeSubscriptions = {};
+
     if (!window.App.cable) {
       window.App.cable = ActionCable.createConsumer();
     }
@@ -24,12 +26,19 @@
         var signedName = tag.getAttribute("signed-stream-name");
 
         if (channel && signedName) {
-          window.App.cable.subscriptions.create(
+
+          if (window.App.activeSubscriptions[signedName]) {
+            console.log("♻️ Já assinado no canal: " + signedName);
+            tag.dataset.connected = "true";
+            return; 
+          }
+
+          console.log("📡 Conectando ao canal: " + signedName);
+
+          window.App.activeSubscriptions[signedName] = window.App.cable.subscriptions.create(
             { channel: channel, signed_stream_name: signedName },
             {
-              connected() { 
-
-              },
+              connected() { console.log("✅ Conectado!"); },
               received(data) {
                 var parser = new DOMParser();
                 var doc = parser.parseFromString(data, "text/html");
@@ -38,17 +47,18 @@
                 if (stream) {
                   var targetId = stream.getAttribute("target");
                   var content = stream.querySelector("template").innerHTML;
+
                   var targetElement = document.getElementById(targetId);
                   
                   if (targetElement) {
                     targetElement.insertAdjacentHTML("beforeend", content);
-
                     targetElement.scrollTop = targetElement.scrollHeight;
                   } 
                 }
               }
             }
           );
+          
           tag.dataset.connected = "true";
         }
       });
