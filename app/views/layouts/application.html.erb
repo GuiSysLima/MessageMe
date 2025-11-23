@@ -8,7 +8,7 @@
   <%= csp_meta_tag %>
   
   <%= action_cable_meta_tag %>
-  
+
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
 
   <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
@@ -28,15 +28,16 @@
   </div>
   <script>
     (function() {
-
-      var waitForTurbo = function() {
-
+      var ensureLibs = function() {
         if (typeof ActionCable === 'undefined' || typeof Turbo === 'undefined') {
-          console.log("⏳ Aguardando ActionCable e Turbo carregarem...");
-          setTimeout(waitForTurbo, 100);
+          console.log("⏳ Aguardando libs...");
+          setTimeout(ensureLibs, 100);
           return;
         }
+        startApp();
+      };
 
+      var startApp = function() {
         if (!window.App) window.App = {};
 
         if (!window.App.cable) {
@@ -44,16 +45,38 @@
           window.App.cable = ActionCable.createConsumer();
         }
 
-        if (Turbo.connectStreamSource) {
-          console.log("🚀 [2/2] Conectando Turbo ao Stream (SUCESSO).");
-          Turbo.connectStreamSource(window.App.cable);
-        } else {
-          console.log("🚀 [2/2] Forçando assinatura manual.");
-          window.App.cable.subscriptions.create("ActionCable::Channel");
-        }
+        var connectStreams = function() {
+          var tags = document.querySelectorAll("turbo-cable-stream-source");
+          
+          tags.forEach(function(tag) {
+            if (tag.dataset.connected) return;
+
+            var channel = tag.getAttribute("channel");
+            var signedName = tag.getAttribute("signed-stream-name");
+
+            if (channel && signedName) {
+              console.log("📡 [2/2] Conectando ao canal: " + signedName);
+
+              window.App.cable.subscriptions.create(
+                { channel: channel, signed_stream_name: signedName },
+                {
+                  connected() { console.log("✅ Conectado!"); },
+                  received(data) {
+                    console.log("📩 Mensagem recebida via WebSocket!");
+                    window.Turbo.renderStreamMessage(data);
+                  }
+                }
+              );
+              tag.dataset.connected = "true";
+            }
+          });
+        };
+
+        connectStreams();
+        document.addEventListener("turbo:load", connectStreams);
       };
 
-      waitForTurbo();
+      ensureLibs();
     })();
   </script>
   </body>
