@@ -25,20 +25,5 @@
 
     <%= yield %>
   </div>
-
-  <script>
-    document.addEventListener("turbo:load", function() {
-      if (typeof ActionCable !== 'undefined') {
-        if (!window.App) window.App = {};
-        
-        if (!window.App.cable) {
-          console.log("🔌 Forçando conexão Action Cable via HTML...");
-          window.App.cable = ActionCable.createConsumer();
-        }
-      } else {
-        console.error("❌ ActionCable não foi carregado. Verifique o application.js");
-      }
-    });
-  </script>
   </body>
 </html>
