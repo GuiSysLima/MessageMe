@@ -1,9 +1,6 @@
 //= require jquery
-//= require rails-ujs
 //= require activestorage
 //= require semantic-ui
-//= require turbo
-//= require actioncable
 //= require custom_cable
 
 var initDropdowns = function() {
