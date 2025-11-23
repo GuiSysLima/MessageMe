@@ -43,6 +43,14 @@
         <% end %>
         
       </div>
+      <div class="right floated content">
+        <%= button_to "Message", conversations_path(friend_id: friend.id), method: :post, class: "ui mini positive button" %>
+        
+        <% friendship = current_user.friendship_with(friend) %>
+        <% if friendship.present? %>
+          <%= button_to "Unfriend", friendship_path(friendship.id), method: :delete, class: "ui mini button" %>
+        <% end %>
+      </div>
     </div>
   <% end %>
 </div>

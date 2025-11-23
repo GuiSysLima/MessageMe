@@ -17,6 +17,20 @@ class User < ApplicationRecord
            through: :friendships, source: :friend
   has_many :friend_requests, -> { where(friendships: { status: :pending }) },
            through: :inverse_friendships, source: :user
+  
+  has_many :conversations_as_sender,
+           class_name: 'Conversation',
+           foreign_key: 'sender_id',
+           dependent: :destroy       
+  has_many :conversations_as_recipient,
+           class_name: 'Conversation',
+           foreign_key: 'recipient_id',
+           dependent: :destroy
+  has_many :private_messages, dependent: :destroy
+
+  def conversations
+    conversations_as_sender.or(conversations_as_recipient)
+  end
 
   def accepted_friends
     (friends + inverse_friends).uniq

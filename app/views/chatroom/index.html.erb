@@ -1,49 +1,69 @@
-<h4 class="ui icon medium header">
-  <i class="circular inverted comments outline icon"></i>
-  <div class="content">
-   Welcome <span style="color: #2185d0; font-weight: bold;"><%= current_user.username %></span>!
-    <div class="sub header"></div>
-  </div>
-</h4>
-
 <div class="ui two column grid">
-  <div class="twelve wide column">
-    <div class="ui fluid raised card chatbox">
-      <div class="content">
-        <div class="ui feed">
-          <%= render @messages%>
-        </div>
+  
+<div class="four wide column">
+  <div class="ui fluid raised card chatbox">
+    <div class="content">
+      <div class="ui vertical menu">
+        <%= link_to search_friends_path, class: "item" do %>
+          <i class="search icon"></i> Search Users
+        <% end %>
       </div>
-      <div class="extra content">
-        <from class="ui reply from">
-          <div class="field">
-            <div class="ui fluid icon input">
-              <input type="text" placeholder="Enter a message...">
-              <i class="bordered inverted black edit icon"></i>
+      
+      <div class="ui hidden divider"></div>
+
+      <div class="ui middle aligned divided list">
+        
+        <% @conversations.each do |conversation| %>
+          <% other_user = (conversation.sender == current_user) ? conversation.recipient : conversation.sender %>
+          
+          <%= link_to conversation_path(conversation), class: "item", data: { turbo_frame: "chat_window" } do %>
+
+            <i class="large user circle icon"></i>
+            
+            <div class="content" style="padding-left: 10px;">
+              <div class="header"><%= other_user.username %></div>
+            </div>
+          <% end %>
+        <% end %>
+
+        <% @friends.each do |friend| %>
+          <% unless @conversations.any? { |c| c.sender == friend || c.recipient == friend } %>
+            
+            <%= link_to conversations_path(friend_id: friend.id), method: :post, class: "item", data: { turbo_frame: "chat_window" } do %>
+              <i class="large add circle icon"></i> <%# "New Chat" icon %>
+              <div class="content" style="padding-left: 10px;">
+                <div class="header"><%= friend.username %></div>
+              </div>
+            <% end %>
+            
+          <% end %>
+        <% end %>
+        
+      </div> </div>
+  </div>
+</div>
+
+  <div class="twelve wide column">
+    
+    <turbo-frame-tag id="chat_window">
+      
+    <div class="ui fluid raised card chatbox" style="height: 100%;">
+      <div class="content" style="height: 100%;">
+        
+        <div class="ui placeholder segment" style="height: 100%;">
+          <div class="ui icon header">
+            <i class="comments outline icon"></i>
+            Your conversations will appear here.
+          </div>
+          <div class="inline">
+            <div class="ui large button">
+              Select a friend or active chat from the list to begin.
             </div>
           </div>
-        </from>
-      </div>
-    </div>
-  </div>
-
-
-  <div class="four wide column">
-    <div class="ui fluid raised card chatbox">
-      <div class="content">
-        <div class="ui vertical menu">
-          <a class="active item">
-            <%= link_to "Search Users", search_friends_path, class: "active item" %>
-            <%= link_to my_friends_path, class: "item" do %>
-              Friends
-              <% if current_user.friend_requests.any? %>
-                <div class="ui mini red circular label">
-                  <%= current_user.friend_requests.count %>
-                </div>
-              <% end %>
-            <% end %>
         </div>
+
       </div>
     </div>
+    </turbo-frame-tag>
   </div>
 </div>

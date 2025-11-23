@@ -5,6 +5,7 @@
 
 <div class="right menu">
   <% if user_signed_in? %>
+  <%= link_to "My Messages", conversations_path, class: "item" %>
   <%= link_to my_friends_path, class: "item" do %>
       <% if current_user.friend_requests.any? %>
         <div class="ui mini red floating circular label">

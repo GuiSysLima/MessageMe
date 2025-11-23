@@ -1,0 +1,22 @@
+<h1 class="ui header">My Conversations</h1>
+
+<div class="ui relaxed divided list">
+  <% @conversations.each do |conversation| %>
+    <% other_user = (conversation.sender == current_user) ? conversation.recipient : conversation.sender %>
+    
+    <div class="item">
+      <div class="content">
+        <%= link_to conversation_path(conversation), class: "header" do %>
+          Chat with <%= other_user.username %>
+        <% end %>
+        <div class="description">
+          <% if conversation.private_messages.any? %>
+            <%= conversation.private_messages.last.body %>
+          <% else %>
+            No messages yet.
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

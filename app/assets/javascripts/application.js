@@ -1,33 +1,35 @@
 //= require jquery
-//= require rails-ujs
 //= require activestorage
 //= require semantic-ui
+//= require turbo
+//= require actioncable
+//= require custom_cable
 
-// Log to prove the file is loading at all
-console.log("application.js loaded");
-
-// Function to initialize dropdowns
-function initializeDropdowns() {
-  console.log("Running initializeDropdowns()...");
+var initDropdowns = function() {
+  console.log("Reiniciando Dropdowns...");
   
-  // Find all dropdowns on the page
-  var dropdowns = $('.ui.dropdown');
+  $('.ui.dropdown').dropdown('destroy');
   
-  // Log what we found
-  console.log("Found " + dropdowns.length + " dropdowns.");
+  $('.ui.dropdown').dropdown({
+    action: 'hide',
+    onChange: function(value) {
+      console.log("Selecionado: " + value);
+    }
+  });
+};
 
-  // Initialize them
-  dropdowns.dropdown();
-}
+$(document).on('turbo:load', initDropdowns);
+$(document).on('turbo:render', initDropdowns);
 
-// Run the function on 'turbo:load'
-$(document).on('turbo:load', function() {
-  console.log("'turbo:load' event fired.");
-  initializeDropdowns();
+$(document).on('click', '.ui.dropdown', function(e) {
+  if (!$(this).hasClass('active')) {
+    $(this).dropdown('show');
+  }
 });
 
-// As a fallback, run it on the classic 'ready' event too
-$(document).ready(function() {
-  console.log("'document.ready' event fired.");
-  initializeDropdowns();
+$(document).on('turbo:frame-load', function() {
+  var chatBox = document.getElementById("private_messages");
+  if (chatBox) {
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
 });

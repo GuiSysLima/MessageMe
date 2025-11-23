@@ -13,3 +13,12 @@
  *= require_tree .
  *= require_self
  */
+
+.ui.menu .ui.dropdown .menu {
+  z-index: 9999 !important;
+  display: none;
+}
+
+.ui.menu .ui.dropdown.active .menu {
+  display: block !important;
+}
