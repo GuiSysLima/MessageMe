@@ -2,34 +2,26 @@
 //= require rails-ujs
 //= require activestorage
 //= require semantic-ui
-//= require action_cable
+//= require actioncable
 
-$(document).on('turbo:load', function() {
+var initDropdowns = function() {
+  console.log("Reiniciando Dropdowns...");
   
-  console.log("Turbo loaded. Running all JavaScript...");
-
-  // 1. Initialize Dropdowns
-  try {
-    $('.ui.dropdown').dropdown();
-    console.log("Dropdowns initialized.");
-  } catch(e) {
-    console.error("Dropdowns failed to initialize:", e);
-  }
-
-  // 2. Start Action Cable
-  try {
-    // Check if it's already running to avoid duplicates
-    if (!window.App || !window.App.cable) {
-      console.log("Creating Action Cable consumer...");
-      window.App || (window.App = {});
-      window.App.cable = ActionCable.createConsumer();
-      console.log("Action Cable consumer created.");
-    } else {
-      console.log("Action Cable consumer already exists.");
+  $('.ui.dropdown').dropdown('destroy');
+  
+  $('.ui.dropdown').dropdown({
+    action: 'hide',
+    onChange: function(value, text, $selectedItem) {
+      console.log("Selecionado: " + value);
     }
-  } catch(e) {
-    console.error("Action Cable failed to create consumer:", e);
-    console.error("This usually means 'ActionCable' is not defined. Check your require statements.");
+  });
+};
+
+$(document).on('turbo:load', initDropdowns);
+$(document).on('turbo:render', initDropdowns);
+
+$(document).on('click', '.ui.dropdown', function(e) {
+  if (!$(this).hasClass('active')) {
+    $(this).dropdown('show');
   }
-  
 });
