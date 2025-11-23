@@ -6,5 +6,5 @@ class PrivateMessage < ApplicationRecord
 
   encrypts :body
 
-  after_create_commit { broadcast_append_to "chat_#{conversation.id.to_s}", target: "private_messages" }
+  #after_create_commit { broadcast_append_to "chat_#{conversation.id.to_s}", target: "private_messages" }
 end
