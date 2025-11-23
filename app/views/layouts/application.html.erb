@@ -27,35 +27,35 @@
   </div>
   <script>
     (function() {
-      var startCable = function() {
-        // Verifica se as bibliotecas carregaram
-        if (typeof ActionCable !== 'undefined' && typeof Turbo !== 'undefined') {
-          
-          if (!window.App) window.App = {};
-          
-          // 1. Cria o consumidor se não existir
-          if (!window.App.cable) {
-            console.log("🚀 (1/2) Criando Action Cable Consumer...");
-            window.App.cable = ActionCable.createConsumer();
-          }
+      var connectTurboToCable = function() {
+        
+        if (typeof ActionCable === 'undefined') return;
+        
+        if (!window.App) window.App = {};
+    
+        if (!window.App.cable) {
+          console.log("🚀 [1/3] Criando Action Cable...");
+          window.App.cable = ActionCable.createConsumer();
+        }
 
-          // 2. O PULO DO GATO: Conecta o Turbo ao Action Cable
+        if (typeof Turbo !== 'undefined') {
           if (Turbo.connectStreamSource) {
-            console.log("🚀 (2/2) Conectando Turbo ao Stream...");
+            console.log("🚀 [2/3] Conectando Turbo (connectStreamSource)...");
             Turbo.connectStreamSource(window.App.cable);
-          } else {
-            // Fallback para versões mais antigas do Turbo
-            console.log("🚀 (2/2) Turbo detectado (Modo Legacy)...");
-            // Força uma assinatura "falsa" só para abrir o WebSocket e manter a porta aberta
-            window.App.cable.subscriptions.create("ActionCable::Channel");
+          } 
+          else if (Turbo.session && Turbo.session.connectStreamSource) {
+            console.log("🚀 [2/3] Conectando Turbo (Turbo.session)...");
+            Turbo.session.connectStreamSource(window.App.cable);
+          }
+          else {
+            console.warn("⚠️ Turbo detectado, mas método de conexão não encontrado.");
           }
         }
       };
-
-      // Tenta rodar imediatamente e também nos eventos de carregamento
-      startCable();
-      document.addEventListener("turbo:load", startCable);
-      document.addEventListener("DOMContentLoaded", startCable);
+      
+      connectTurboToCable();
+      document.addEventListener("turbo:load", connectTurboToCable);
+      document.addEventListener("DOMContentLoaded", connectTurboToCable);
     })();
   </script>
   </body>
