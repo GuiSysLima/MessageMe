@@ -26,3 +26,10 @@ $(document).on('click', '.ui.dropdown', function(e) {
     $(this).dropdown('show');
   }
 });
+
+$(document).on('turbo:frame-load', function() {
+  var chatBox = document.getElementById("private_messages");
+  if (chatBox) {
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+});
