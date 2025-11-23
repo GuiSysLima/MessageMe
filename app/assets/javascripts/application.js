@@ -1,9 +1,7 @@
-//= require turbo
 //= require jquery
 //= require rails-ujs
 //= require activestorage
 //= require semantic-ui
-//= require actioncable
 
 var initDropdowns = function() {
   console.log("Reiniciando Dropdowns...");
