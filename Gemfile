@@ -27,6 +27,8 @@ gem "hirb"
 
 gem 'devise'
 
+gem "jsbundling-rails"
+
 gem "bootsnap", require: false
 
 gem "dotenv-rails"
