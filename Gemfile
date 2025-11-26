@@ -29,6 +29,8 @@ gem 'devise'
 
 gem "bootsnap", require: false
 
+gem "dotenv-rails"
+
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
 end
