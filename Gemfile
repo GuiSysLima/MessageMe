@@ -38,6 +38,7 @@ end
 group :development do
   gem "web-console"
   gem "pg"
+  gem "dotenv-rails"
 end
 
 group :test do
