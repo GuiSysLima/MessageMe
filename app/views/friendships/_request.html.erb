@@ -1,0 +1,12 @@
+<div class="item">
+  <div class="content">
+    <div class="header">
+      <%= user.username %> wants to be your friend.
+    </div>
+  </div>
+  <div class="right floated content">
+    <%# Usamos a variável 'friendship' que passamos no locals do modelo %>
+    <%= button_to "Accept", friendship_path(friendship.id), method: :patch, class: "ui mini primary button" %>
+    <%= button_to "Decline", friendship_path(friendship.id), method: :delete, class: "ui mini button" %>
+  </div>
+</div>

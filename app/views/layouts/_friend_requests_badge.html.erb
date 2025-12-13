@@ -1,0 +1,7 @@
+<div id="navbar_notifications">
+  <% if user.friend_requests.any? %>
+    <div class="ui mini red floating circular label">
+      <%= user.friend_requests.count %>
+    </div>
+  <% end %>
+</div>

@@ -1,22 +1,14 @@
 <h2 class="ui header">Friend Requests</h2>
 
 <% if @friend_requests.empty? %>
-  <p>You have no new friend requests.</p>
+  <div id="pending_requests" class="ui relaxed divided list">
+    <p>You have no new friend requests.</p>
+  </div>
 <% else %>
-  <div class="ui relaxed divided list">
+  <div id="pending_requests" class="ui relaxed divided list">
     <% @friend_requests.each do |user| %>
-      <div class="item">
-        <div class="content">
-          <div class="header"><%= user.username %> wants to be your friend.</div>
-        </div>
-        <div class="right floated content">
-          <% friendship = current_user.inverse_friendships.find_by(user: user) %>
-          <% if friendship.present? %>
-            <%= button_to "Accept", friendship_path(friendship.id), method: :patch, class: "ui mini primary button" %>
-            <%= button_to "Decline", friendship_path(friendship.id), method: :delete, class: "ui mini button" %>
-          <% end %>
-        </div>
-      </div>
+      <% friendship = current_user.inverse_friendships.find_by(user: user) %>
+      <%= render "friendships/request", user: user, friendship: friendship %>
     <% end %>
   </div>
 <% end %>

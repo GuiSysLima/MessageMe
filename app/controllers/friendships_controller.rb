@@ -44,7 +44,7 @@ class FriendshipsController < ApplicationController
     friendship = current_user.friendship_with(User.find(Friendship.find(params[:id]).friend_id)) || 
                    current_user.friendship_with(User.find(Friendship.find(params[:id]).user_id))
     if friendship.destroy
-      flash[:notice] = "#{friendship.friend.username} is no longer your friend."
+      flash[:notice] = "#{friendship.friend.username} is no longer your friend." #TODO: Adjust message for both sides
     else
       flash[:alert] = "There was an error.\n Please try again."
     end
